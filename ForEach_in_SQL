@@ -1,0 +1,54 @@
+--Set up constants
+DECLARE @Division INT = '1234'
+DECLARE @CurDate datetime = GetDate()
+
+--Number List to iterate through
+DECLARE @NumberList TABLE (Number int)
+
+--Temp table for outputs
+--This table's columns must match the Final Output Table's columns (except for the primary key, assuming that is auto-generated) in order to work
+DECLARE @TempTable TABLE (Number int, Division int, Letter varchar(100), CreatedDate datetime)
+
+--List of Numbers to iterate through
+INSERT INTO @NumberList
+SELECT '1'UNION SELECT'2'UNION SELECT'3'UNION SELECT'4'UNION SELECT'5'UNION SELECT'6'
+UNION SELECT'7'UNION SELECT'8'UNION SELECT'9'UNION SELECT'10'UNION SELECT'11'UNION SELECT'12'
+
+--Set up while-loop counters
+DECLARE @cnt int = 1
+DECLARE @max int = (select count(*) from @NumberList)
+
+--while-loop starts here. for-each element in NumberList, it 
+WHILE @cnt <= @max
+BEGIN
+	DECLARE @TempInsertTable TABLE (Number int, Division int, Letter varchar(100), CreatedDate datetime)
+
+	INSERT INTO @TempInsertTable (Letter)
+	SELECT 'a'UNION SELECT'b'UNION SELECT'c'UNION SELECT'd'UNION SELECT 'd'
+
+	DECLARE @tempValueNumber int = (
+		select Number
+		from	(select Number,
+				 ROW_NUMBER() OVER(ORDER BY (select 1)) as RowId
+				 from @NumberList
+				 ) T1
+				 where t1.RowId = @cnt
+	);
+
+	UPDATE @TempInsertTable
+	Set CreatedDate = @CurDate, Division = @Division, Number = @tempValueNumber
+
+
+	INSERT INTO @TempTable
+	SELECT * FROM @TempInsertTable
+
+	delete from @TempInsertTable
+
+    set @cnt = @cnt+1;
+END
+
+select * from @TempTable
+
+insert into DestinationTable
+select Number, Division, Letter, CreatedDate
+from @TempTable
