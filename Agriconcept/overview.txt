@@ -1,0 +1,10 @@
+Agriconcept overview
+Worker-placement c++ game
+------------------------------------
+*Overall gameplay structure
+TBD
+
+*Features to add later
+-Interface with Alexa/Home API for voice commands
+-2+ player mode
+-Multiplayer over network

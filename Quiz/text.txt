@@ -1,0 +1,5 @@
+﻿What command allows you to quickly see the various errors that might have occurred on Gi0/1 on a Cisco switch?-show interface gi0/1
+What is the typical size of a Giant frame in a Gigabit Ethernet data center?-9216 bytes
+What is the typical size of a Baby Giant frame in a modern network?-1600 bytes
+Runts are frames that are beneath what size?-64 bytes
+Name the two types of duplex options.-full and half duplex
